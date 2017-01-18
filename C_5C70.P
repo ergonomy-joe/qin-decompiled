@@ -1,0 +1,40 @@
+{same as Le Maitre Des Ames, Le Necromancien}
+
+FUNCTION C_5C70:BOOLEAN;
+VAR
+	_buffer:ARRAY[0..$1ff] OF BYTE;
+	_sect:INTEGER;
+	_i:INTEGER;
+	_drive:INTEGER;
+	_results:ARRAY[0..1] OF BOOLEAN;
+	_key:STRING[10];
+BEGIN
+	_results[0] := TRUE;
+	_results[1] := TRUE;
+	_key := '!QIN-3H!';
+
+	FOR _drive := 0 TO 0
+	DO BEGIN
+		_sect := 0;
+		X86Regs.AX := 0;
+		INTR($13,X86Regs);
+
+		WHILE _results[_drive] AND (_sect < 19)
+		DO BEGIN
+			X86Regs.AX := $201;
+			X86Regs.CX := $2700 + _sect;
+			X86Regs.DX := $100 + _drive;
+			X86Regs.ES := SEG(_buffer);
+			X86Regs.BX := OFS(_buffer);
+			INTR($13,X86Regs);
+			IF (LO(X86Regs.Flags) MOD 2) = 1
+			THEN _results[_drive] := FALSE;
+			_sect := _sect + 1;
+		END;
+
+		FOR _i := 0 TO LENGTH(_key) - 1
+		DO IF _buffer[_i + $1f8] <> ORD(_key[_i + 1])
+		THEN _results[_drive] := FALSE;
+	END;
+	C_5C70 := _results[0];
+END;
