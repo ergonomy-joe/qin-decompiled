@@ -1,5 +1,5 @@
 #*    binary
-*           encoding=windows-1252
+*           encoding=FR-ASCII
 
 #*.PAS		text working-tree-encoding=windows-1252 encoding=windows-1252
 #*.PAS          binary
