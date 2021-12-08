@@ -1,5 +1,6 @@
 #*    text
 #*.PAS    binary
 
-*.PAS		text working-tree-encoding=windows-1252 encoding=windows-1252
+#*.PAS		text working-tree-encoding=windows-1252 encoding=windows-1252
+*.PAS		text working-tree-encoding=UTF-16 encoding=UTF-16
 
